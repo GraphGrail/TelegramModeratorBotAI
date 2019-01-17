@@ -1,3 +1,4 @@
+import os
 import telebot
 import sqlite3
 import settings
@@ -8,14 +9,15 @@ from keras.models import load_model
 import pickle
 
 #spacy.load('xx_ent_wiki_sm')
+script_dir = os.path.dirname(__file__)
 bot = telebot.TeleBot(settings.BOT_TOKEN)
-conn = sqlite3.connect('universabot.db', check_same_thread=False)
+conn = sqlite3.connect(os.path.join(script_dir, 'universabot.db'), check_same_thread=False)
 c = conn.cursor()
 
-with open('./model_files/token.pickle', 'rb') as handle:
+with open(os.path.join(script_dir, 'model_files/token.pickle'), 'rb') as handle:
     tok = pickle.load(handle)
 
-model = load_model('./model_files/rus_weights2.hdf5')
+model = load_model(os.path.join(script_dir, 'model_files/rus_weights2.hdf5'))
 evaluator = CommentEvaluator(model, tok)
 
 
