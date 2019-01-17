@@ -38,7 +38,7 @@ def delete_links(message):
         if entity.type in settings.RESTRICTED_LINKS:
             bot.delete_message(message.chat.id, message.message_id)
             bot.send_message(message.chat.id, settings.strings.get(get_language(message.from_user.language_code)).get("ro_link"), reply_to_message_id=message.message_id)
-            #bot.restrict_chat_member()
+            bot.restrict_chat_member(message.chat.id, message.from_user.id, until_date=time()+60*settings.MINUTES)
         else:
             return
 
