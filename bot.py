@@ -63,7 +63,7 @@ def handle_negative(message):
                                                                          message.from_user.id, datetime.now(),
                                                                          message.chat.id,))
         conn.commit()
-        c.execute("SELECT MESSAGE_ID FROM message WHERE CREATED_AT >= Datetime('now', '-5 minutes', 'localtime') AND SENITMENT=0")
+        c.execute("SELECT MESSAGE_ID FROM message WHERE CREATED_AT >= Datetime('now', '-60 minutes', 'localtime') AND SENITMENT=0")
         rows = c.fetchall()
         print(rows)
         if len(rows) >= 10:
@@ -92,6 +92,26 @@ def handle_positive(message):
     else:
         c.execute('UPDATE Userstat SET positive_total=positive_total+1')
         c.execute('Insert INTO message VALUES(NULL, ?, ?, ?, ?, ?, ?)', (message.message_id, message.text, 1,
+                                                                         message.from_user.id, datetime.now(),
+                                                                         message.chat.id,))
+        conn.commit()
+
+@bot.message_handler(func=lambda message: message.text and evaluator.analyze(message.text) == "neutral")
+def handle_positive(message):
+    c.execute('SELECT ID FROM Userstat WHERE user_id=? and chat_id=?',
+              (int(message.from_user.id), int(message.chat.id)))
+    rows = c.fetchall()
+    if len(rows) == 0:
+        c.execute('INSERT INTO Userstat VALUES(NULL, ?, ?, ?, ?, ?, ?)', (message.from_user.id,
+                                                                          message.from_user.first_name, 0,
+                                                                          datetime.now(), 0, message.chat.id,))
+        c.execute('INSERT INTO message VALUES(NULL, ?, ?, ?, ?, ?, ?)', (message.message_id, message.text, 2,
+                                                                         message.from_user.id, datetime.now(),
+                                                                         message.chat.id,))
+        conn.commit()
+    else:
+        c.execute('UPDATE Userstat SET positive_total=positive_total+1')
+        c.execute('Insert INTO message VALUES(NULL, ?, ?, ?, ?, ?, ?)', (message.message_id, message.text, 2,
                                                                          message.from_user.id, datetime.now(),
                                                                          message.chat.id,))
         conn.commit()
