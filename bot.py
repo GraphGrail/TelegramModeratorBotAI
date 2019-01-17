@@ -66,7 +66,7 @@ def handle_negative(message):
         c.execute("SELECT MESSAGE_ID FROM message WHERE CREATED_AT >= Datetime('now', '-60 minutes', 'localtime') AND SENITMENT=0")
         rows = c.fetchall()
         print(rows)
-        if len(rows) >= 10:
+        if len(rows) >= 5:
             bot.restrict_chat_member(message.chat.id, message.from_user.id, until_date=time()+60*settings.MINUTES)
             #c.execute('Update Userstat SET blocked_time=?', )
             #conn.commit()
