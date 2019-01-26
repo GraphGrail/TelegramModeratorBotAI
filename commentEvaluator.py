@@ -40,6 +40,8 @@ class CommentEvaluator():
         # Мошенничество
         self.negativePatterns_.append([{"LOWER": "мошенничество"}])
         self.negativePatterns_.append([{"LOWER": "мошеннический"}])
+        self.negativePatterns_.append([{"LOWER": "обман"}])
+        self.negativePatterns_.append([{"LOWER": "обманщик"}])
         self.negativePatterns_.append([{"LOWER": "кидалово"}])
         self.negativePatterns_.append([{"LOWER": "кинуть"}])
         self.negativePatterns_.append([{"LOWER": "распил"}])
@@ -71,6 +73,16 @@ class CommentEvaluator():
         self.negativePatterns_.append([{"LOWER": "глючит"}])
         self.negativePatterns_.append([{"LOWER": "лагает"}])
 
+        # Нецензурная лексика
+        self.negativePatterns_.append([{"LOWER": "ебать"}])
+        self.negativePatterns_.append([{"LOWER": "хуй"}])
+        self.negativePatterns_.append([{"LOWER": "пидорас"}])
+        self.negativePatterns_.append([{"LOWER": "гандон"}])
+        self.negativePatterns_.append([{"LOWER": "гондон"}])
+        self.negativePatterns_.append([{"LOWER": "хуйня"}])
+        self.negativePatterns_.append([{"LOWER": "херня"}])
+        self.negativePatterns_.append([{"LOWER": "ублюдок"}])
+
         self.negativePhraseMatcher_ = Matcher(self.nlp_.vocab)
         
         i = 0
@@ -99,9 +111,9 @@ class CommentEvaluator():
         with self.graph.as_default():
             answer = self.model.predict(check, batch_size=1024)
         print('Res:', answer)
-        if answer[0][0] >= 0.17:
+        if answer[0][1] >= 0.14:
             return "negative"
-        elif answer[0][0] > 0.04 and answer[0][0] < 0.17:
+        elif answer[0][1] > 0.05 and answer[0][1] < 0.14:
             return "neutral"
         else:
             return "positive"
