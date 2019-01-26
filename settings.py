@@ -4,9 +4,9 @@ MAX_LENGTH = 150
 MINUTES=180
 strings = {
     "ru": {
-        "ro_msg": "Вам запрещено отправлять сюда сообщения в течение одного дня."
+        "ro_msg": "Вам запрещено отправлять сюда сообщения в течение трех часов."
     },
     "en": {
-        "ro_msg": "You're not allowed to send messages here for one day."
+        "ro_msg": "You're not allowed to send messages here for three hours."
     }
 }

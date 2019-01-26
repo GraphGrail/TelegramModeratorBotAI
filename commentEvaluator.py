@@ -101,7 +101,7 @@ class CommentEvaluator():
         print('Res:', answer)
         if answer[0][0] >= 0.17:
             return "negative"
-        elif answer[0][0] > 0.06 and answer[0][0] < 0.17:
+        elif answer[0][0] > 0.05 and answer[0][0] < 0.17:
             return "neutral"
         else:
             return "positive"
