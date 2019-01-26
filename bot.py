@@ -68,8 +68,8 @@ def handle_negative(message):
         print(rows)
         if len(rows) >= 5:
             bot.restrict_chat_member(message.chat.id, message.from_user.id, until_date=time()+60*settings.MINUTES)
-            #c.execute('Update Userstat SET blocked_time=?', )
-            #conn.commit()
+            c.execute("INSERT INTO banned VALUES(NULL, ?, Datetime('now'), Datetime('now', '+180 minutes', 'localtime'))", message.user_id)
+            conn.commit()
             bot.send_message(message.chat.id,
                              settings.strings.get(get_language(message.from_user.language_code)).get("ro_msg"),
                              reply_to_message_id=message.message_id)
