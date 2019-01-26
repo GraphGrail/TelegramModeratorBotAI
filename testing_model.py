@@ -9,6 +9,8 @@ with open(os.path.join(script_dir, 'model_files/token.pickle'), 'rb') as handle:
 
 model = load_model(os.path.join(script_dir, 'model_files/rus_weights2.hdf5'))
 evaluator = CommentEvaluator(model, tok)
-text = input('Введите текст для проверки: ')
-print(evaluator.analyze(text))
-print()
+
+while True:
+    text = input('Введите текст для проверки: ')
+    print(evaluator.analyze(text))
+    print()
