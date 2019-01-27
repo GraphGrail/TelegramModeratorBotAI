@@ -63,7 +63,7 @@ def handle_negative(message):
                                                                          message.from_user.id, datetime.now(),
                                                                          message.chat.id,))
         conn.commit()
-        c.execute("SELECT MESSAGE_ID FROM message WHERE CREATED_AT >= Datetime('now', '-60 minutes', 'localtime') AND SENITMENT=0 AND USER_ID=?", message.from_user.id)
+        c.execute("SELECT MESSAGE_ID FROM message WHERE CREATED_AT >= Datetime('now', '-60 minutes', 'localtime') AND SENITMENT=0 AND USER_ID=?", (message.from_user.id))
         rows = c.fetchall()
         print(rows)
         if len(rows) >= 5:
@@ -71,7 +71,7 @@ def handle_negative(message):
             bot.send_message(message.chat.id,
                              settings.strings.get(get_language(message.from_user.language_code)).get("ro_msg"),
                              reply_to_message_id=message.message_id)
-            c.execute("INSERT INTO banned VALUES(NULL, ?, ?, ?)", message.from_user.id, datetime.now(), datetime.now() + timedelta(minutes=180))
+            c.execute("INSERT INTO banned VALUES(NULL, ?, ?, ?)", (message.from_user.id, datetime.now(), datetime.now() + timedelta(minutes=180)))
             conn.commit()
             #bot.delete_message(message.chat.id, message.message_id)
 
