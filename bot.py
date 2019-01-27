@@ -3,7 +3,7 @@ import telebot
 import sqlite3
 import settings
 from time import time
-from datetime import datetime
+from datetime import datetime, timedelta
 from commentEvaluator import CommentEvaluator
 from keras.models import load_model
 import pickle
@@ -71,7 +71,7 @@ def handle_negative(message):
             bot.send_message(message.chat.id,
                              settings.strings.get(get_language(message.from_user.language_code)).get("ro_msg"),
                              reply_to_message_id=message.message_id)
-            c.execute("INSERT INTO banned VALUES(NULL, ?, Datetime('now'), Datetime('now', '+180 minutes', 'localtime'))", message.from_user.id)
+            c.execute("INSERT INTO banned VALUES(NULL, ?, ?, ?)", message.from_user.id, datetime.now(), datetime.now() + timedelta(minutes=180))
             conn.commit()
             #bot.delete_message(message.chat.id, message.message_id)
 
