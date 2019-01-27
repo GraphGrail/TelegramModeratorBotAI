@@ -67,12 +67,15 @@ def handle_negative(message):
         rows = c.fetchall()
         print(rows)
         if len(rows) >= 5:
-            bot.restrict_chat_member(message.chat.id, message.from_user.id, until_date=time()+60*settings.MINUTES)
-            bot.send_message(message.chat.id,
-                             settings.strings.get(get_language(message.from_user.language_code)).get("ro_msg"),
-                             reply_to_message_id=message.message_id)
-            c.execute("INSERT INTO banned VALUES(NULL, ?, ?, ?)", (message.from_user.id, datetime.now(), datetime.now() + timedelta(minutes=180),))
-            conn.commit()
+            if not int(message.from_user.id) in settings.ADMINS:
+                bot.restrict_chat_member(message.chat.id, message.from_user.id, until_date=time()+60*settings.MINUTES)
+                bot.send_message(message.chat.id,
+                                 settings.strings.get(get_language(message.from_user.language_code)).get("ro_msg"),
+                                 reply_to_message_id=message.message_id)
+                c.execute("INSERT INTO banned VALUES(NULL, ?, ?, ?)", (message.from_user.id, datetime.now(), datetime.now() + timedelta(minutes=180),))
+                conn.commit()
+            else:
+                print('Admin can not be banned!')
             #bot.delete_message(message.chat.id, message.message_id)
 
 
